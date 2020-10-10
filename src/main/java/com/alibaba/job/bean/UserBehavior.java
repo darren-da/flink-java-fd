@@ -1,4 +1,4 @@
-package com.alibaba.job.userbehavior.bean;
+package com.alibaba.job.bean;
 
 /**
  * @author fada.yu

@@ -1,6 +1,6 @@
 package com.alibaba.job.userbehavior;
 
-import com.alibaba.job.userbehavior.bean.UserBehavior;
+import com.alibaba.job.bean.UserBehavior;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
