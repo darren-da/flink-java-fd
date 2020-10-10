@@ -2,6 +2,8 @@ package com.alibaba.base.sink
 
 import java.util
 
+import com.alibaba.base.MySource
+import com.alibaba.base.bean.WaterSensor
 import org.apache.flink.api.common.functions.RuntimeContext
 import org.apache.flink.streaming.api.datastream.DataStreamSource
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment

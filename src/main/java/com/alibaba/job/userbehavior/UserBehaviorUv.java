@@ -9,6 +9,7 @@ import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.ProcessFunction;
 import org.apache.flink.util.Collector;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,7 +19,7 @@ import java.util.Set;
  * @Description：
  */
 public class UserBehaviorUv {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         SingleOutputStreamOperator<UserBehavior> userBehaviorDS = env.readTextFile("D:\\Personal\\workspace\\dp-flink-workspace-fada\\flink-java\\src\\main\\resources\\input\\UserBehavior.csv")
                 .map(line -> {
@@ -51,9 +52,9 @@ public class UserBehaviorUv {
 
         //按照 uv 分组
         KeyedStream<Tuple2<String, Long>, String> uvAndUserIdKS = uvAndUserIdDS.keyBy(tuple2 -> tuple2.f0);
-//        5)	对每一条读取的数据进行去重，这里可以采用Scala集合Set完成
+//        5)	对每一条读取的数据进行去重，这里可以采用Java集合Set完成
 
-        uvAndUserIdKS.process(
+        SingleOutputStreamOperator<Integer> uvDS = uvAndUserIdKS.process(
                 new ProcessFunction<Tuple2<String, Long>, Integer>() {
                     private Set<Long> uvCount = new HashSet<>();
 
@@ -66,6 +67,8 @@ public class UserBehaviorUv {
                     }
                 }
         );
+        uvDS.print();
+        env .execute("uv ");
 
     }
 };
