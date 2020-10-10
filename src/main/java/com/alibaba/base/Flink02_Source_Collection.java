@@ -1,6 +1,6 @@
 package com.alibaba.base;
 
-import com.atalibaba.base.bean.WaterSensor;
+import com.alibaba.base.bean.WaterSensor;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 

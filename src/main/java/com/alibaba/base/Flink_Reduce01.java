@@ -1,6 +1,6 @@
 package com.alibaba.base;
 
-import com.atalibaba.base.bean.WaterSensor;
+import com.alibaba.base.bean.WaterSensor;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.typeinfo.TypeHint;
 import org.apache.flink.api.java.tuple.Tuple2;

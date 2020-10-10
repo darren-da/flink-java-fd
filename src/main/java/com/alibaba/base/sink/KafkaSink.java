@@ -1,7 +1,7 @@
 package com.alibaba.base.sink;
 
-import com.atalibaba.base.MySource;
-import com.atalibaba.base.bean.WaterSensor;
+import com.alibaba.base.MySource;
+import com.alibaba.base.bean.WaterSensor;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
