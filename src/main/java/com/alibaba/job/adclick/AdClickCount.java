@@ -31,7 +31,12 @@ public class AdClickCount {
                     }
                 });
 
-        SingleOutputStreamOperator<Tuple2<String, Integer>> adClickCountDs = adClickDS.map(new MapFunction<AdClickLog, Tuple2<String, Integer>>() {
+        SingleOutputStreamOperator<AdClickLog> filterDS = adClickDS.filter(data -> data.getProvince().equals("hangzhou")
+        ||data.getProvince().equals("nanjing"))
+                ;
+
+
+        SingleOutputStreamOperator<Tuple2<String, Integer>> adClickCountDs = filterDS.map(new MapFunction<AdClickLog, Tuple2<String, Integer>>() {
             @Override
             public Tuple2<String, Integer> map(AdClickLog value) throws Exception {
                 return Tuple2.of(value.getProvince() + "_" + value.getAdId(), 1);
