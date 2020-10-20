@@ -1,6 +1,7 @@
 package com.alibaba.job.adclick;
 
 import com.alibaba.job.bean.AdClickLog;
+import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.runtime.executiongraph.Execution;
@@ -32,8 +33,13 @@ public class AdClickCount {
                 });
 
         SingleOutputStreamOperator<AdClickLog> filterDS = adClickDS.filter(data -> data.getProvince().equals("hangzhou")
-        ||data.getProvince().equals("nanjing"))
-                ;
+        ||data.getProvince().equals("nanjing"));
+//        SingleOutputStreamOperator<AdClickLog> filterDS = adClickDS.filter(new FilterFunction<AdClickLog>() {
+//            @Override
+//            public boolean filter(AdClickLog value) throws Exception {
+//                return "hangzhou".equals(value.getProvince()) || "nanjing".equals(value.getProvince());
+//            }
+//        });
 
 
         SingleOutputStreamOperator<Tuple2<String, Integer>> adClickCountDs = filterDS.map(new MapFunction<AdClickLog, Tuple2<String, Integer>>() {
