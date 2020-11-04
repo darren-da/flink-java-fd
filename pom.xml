@@ -50,6 +50,12 @@
             <artifactId>flink-connector-kafka-0.11_${scala.binary.version}</artifactId>
             <version>${flink.version}</version>
         </dependency>
+        <!--http -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>4.4.2</version>
+        </dependency>
 
 
         <!-- https://mvnrepository.com/artifact/org.apache.bahir/flink-connector-redis -->
