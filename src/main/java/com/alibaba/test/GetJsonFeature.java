@@ -15,7 +15,7 @@ import java.util.Set;
  * @Description：
  */
 public class GetJsonFeature {
-//    private static final String URL = "https://zlfs-pre-api.***.com/feature/all";
+//    private static final String URL = "*********";
     private static final String URL = "http://d-feature-service.***.com/manager/loadKeyMapping?useCache=false";
 
     /**
