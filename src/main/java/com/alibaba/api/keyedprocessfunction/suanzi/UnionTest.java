@@ -1,5 +1,6 @@
 package com.alibaba.api.keyedprocessfunction.suanzi;
 
+import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
@@ -17,9 +18,13 @@ public class UnionTest {
         DataStreamSource<Integer> numDS2 = env.fromCollection(Arrays.asList(5, 6, 7, 8));
         DataStreamSource<Integer> numDS3 = env.fromCollection(Arrays.asList(9, 10));
 
-        numDS1.print("1");
-        numDS1.print("2");
-        numDS1.print("3");
+        DataStream<Integer> unionDS = numDS1
+                .union(numDS2)
+                .union(numDS3);
+        unionDS.print("union");
+//        numDS1.print("1");
+//        numDS1.print("2");
+//        numDS1.print("3");
 
         env.execute("test");
     }
