@@ -51,7 +51,7 @@ public class GetJsonArray {
         Iterator<String> it = jsonObject.keySet().iterator();
         while(it.hasNext()){
             String key=it.next();
-            System.out.println(key+":"+obj.get(key));
+            System.out.println(key+":"+obj.getString(key));
         }
     }
 
