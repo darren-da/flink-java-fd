@@ -1,7 +1,9 @@
 package com.alibaba.base;
 
 import com.alibaba.base.bean.WaterSensor;
+import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
+import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 import java.util.Arrays;
@@ -12,7 +14,7 @@ import java.util.Arrays;
  * @Description：
  */
 public class Flink02_Source_Collection {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args)  {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
         DataStreamSource<WaterSensor> colleciontDs = env.fromCollection(
@@ -22,7 +24,17 @@ public class Flink02_Source_Collection {
                         new WaterSensor("ws_003", 1577844020L, 42)
                 )
         );
-        colleciontDs.print();
-        env.execute();
+        SingleOutputStreamOperator<WaterSensor> filterDs = colleciontDs.filter(new FilterFunction<WaterSensor>() {
+            @Override
+            public boolean filter(WaterSensor waterSensor) throws Exception {
+                return waterSensor.getVc() > 43;
+            }
+        });
+        filterDs.print("filterDs:");
+        try {
+            env.execute("filterDs");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

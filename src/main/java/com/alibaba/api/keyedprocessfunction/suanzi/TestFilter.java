@@ -3,11 +3,11 @@ package com.alibaba.api.keyedprocessfunction.suanzi;
 import com.alibaba.base.bean.WaterSensor;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.MapFunction;
-import org.apache.flink.streaming.api.datastream.ConnectedStreams;
-import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.datastream.DataStreamSource;
-import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
+import org.apache.flink.streaming.api.collector.selector.OutputSelector;
+import org.apache.flink.streaming.api.datastream.*;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+import java.util.Arrays;
 
 /**
  * @author :YuFada
@@ -23,7 +23,7 @@ public class TestFilter {
             String[] datas = value.split(",");
             return new WaterSensor(datas[0], Long.valueOf(datas[1]), Integer.valueOf(datas[2]));
         });
-        SingleOutputStreamOperator<WaterSensor> fiterDS1 = sensorDs.filter(new FilterFunction<WaterSensor>() {
+      /*  SingleOutputStreamOperator<WaterSensor> fiterDS1 = sensorDs.filter(new FilterFunction<WaterSensor>() {
             @Override
             public boolean filter(WaterSensor waterSensor) throws Exception {
                 return waterSensor.getVc() == 60;
@@ -46,6 +46,29 @@ public class TestFilter {
         } catch (Exception e) {
             e.printStackTrace();
         }
+*/
 
+        SplitStream<WaterSensor> splitSS = sensorDs.split(new OutputSelector<WaterSensor>() {
+            @Override
+            public Iterable<String> select(WaterSensor value) {
+                if (value.getVc() < 50) {
+                    return Arrays.asList("normal");
+                } else if (value.getVc() < 80) {
+                    return Arrays.asList("warn");
+                } else {
+                    return Arrays.asList("alarm");
+                }
+
+            }
+        });
+
+        splitSS.select("normal").print("normal");
+        splitSS.select("warn").print("warn");
+        splitSS.select("alarm").print("alarm");
+        try {
+            env.execute("split-test");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
