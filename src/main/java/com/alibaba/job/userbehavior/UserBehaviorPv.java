@@ -17,7 +17,7 @@ public class UserBehaviorPv {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
-        SingleOutputStreamOperator<UserBehavior> userBehaviorDS = env.readTextFile("D:\\Personal\\workspace\\dp-flink-workspace-fada\\flink-java\\src\\main\\resources\\input\\UserBehavior.csv")
+        SingleOutputStreamOperator<UserBehavior> userBehaviorDS = env.readTextFile("input/UserBehavior.csv")
                 .map(line -> {
                     String[] datas = line.split(",");
                     return new UserBehavior(
