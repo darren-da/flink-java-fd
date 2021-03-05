@@ -32,7 +32,7 @@ public class AdClickCount {
                     }
                 });
 
-        SingleOutputStreamOperator<AdClickLog> filterDS = adClickDS.filter(data -> data.getProvince().equals("hangzhou")
+        SingleOutputStreamOperator<AdClickLog> filterDS = adClickDS.filter(data -> data.getProvince().equals("beijing")
         ||data.getProvince().equals("nanjing"));
 //        SingleOutputStreamOperator<AdClickLog> filterDS = adClickDS.filter(new FilterFunction<AdClickLog>() {
 //            @Override
@@ -52,7 +52,6 @@ public class AdClickCount {
                 .sum(1);
 
         adClickCountDs.print("addClickCount");
-
    env.execute("addclickCount");
     }
 
