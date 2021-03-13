@@ -3,6 +3,7 @@ package com.alibaba.api.keyedprocessfunction;
 import com.alibaba.base.bean.WaterSensor;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.api.common.functions.ReduceFunction;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.common.time.Time;
 import org.apache.flink.api.java.tuple.Tuple;
@@ -38,12 +39,12 @@ public class KeyedProcessFunction {
             }
         });
 
-        SingleOutputStreamOperator<WaterSensor> sumDs = mapDs.filter(vc -> vc.getVc() > 60)
-                .keyBy(k -> k.getId())
-                .sum(3);
-        sumDs.print("sumDs");
+        SingleOutputStreamOperator<WaterSensor> filterDs = mapDs.filter(vc -> vc.getVc() > 60);
+
+
+        filterDs.print("filterDs");
         try {
-            env.execute("sumDs");
+            env.execute("filterDs");
         } catch (Exception e) {
             e.printStackTrace();
         }
