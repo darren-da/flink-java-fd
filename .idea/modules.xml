@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/DataClean/DataClean.iml" filepath="$PROJECT_DIR$/DataClean/DataClean.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/flink-java-fd.iml" filepath="$PROJECT_DIR$/.idea/flink-java-fd.iml" />
     </modules>
   </component>
