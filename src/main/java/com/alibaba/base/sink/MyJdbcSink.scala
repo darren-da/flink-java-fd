@@ -1,3 +1,4 @@
+/*
 package com.alibaba.base.sink
 
 import java.sql.{Connection, DriverManager, PreparedStatement}
@@ -5,11 +6,14 @@ import java.sql.{Connection, DriverManager, PreparedStatement}
 import org.apache.flink.configuration.Configuration
 import org.apache.flink.streaming.api.functions.sink.{RichSinkFunction, SinkFunction}
 
+
 /**
- * @author fada.yu
- * @date 2020/10/10 13:48
- * @Description：
- */
+  * @author fada.yu
+  * @date 2020/10/10 13:05
+  * @Description ：
+  */
+
+
 class MyJdbcSink() extends RichSinkFunction[String]{
   var conn: Connection = _
   var insertStmt: PreparedStatement = _
@@ -37,3 +41,5 @@ class MyJdbcSink() extends RichSinkFunction[String]{
     conn.close()
   }
 }
+
+*/

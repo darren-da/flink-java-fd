@@ -5,7 +5,7 @@ import com.alibaba.base.bean.WaterSensor;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer011;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
 import org.apache.flink.streaming.util.serialization.KeyedSerializationSchema;
 
 /**
@@ -19,9 +19,9 @@ public class KafkaSink {
         env.setParallelism(1);
         DataStreamSource<WaterSensor> sensorDS = env.addSource(new MySource());
 
-        sensorDS.addSink(new FlinkKafkaProducer011<WaterSensor>(
+        sensorDS.addSink(new FlinkKafkaProducer<WaterSensor>(
                 "hadoop102:9092"
-                ,"sensor"
+                , "sensor"
                 , (KeyedSerializationSchema<WaterSensor>) new SimpleStringSchema()
         ));
     }

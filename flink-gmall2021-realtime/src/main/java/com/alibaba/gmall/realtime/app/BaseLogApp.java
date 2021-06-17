@@ -3,6 +3,11 @@ package com.alibaba.gmall.realtime.app;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.gmall.realtime.utils.MyKafkaUtils;
 import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.api.common.functions.RichMapFunction;
+import org.apache.flink.api.common.functions.RuntimeContext;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.configuration.Configuration;
 import org.apache.flink.runtime.state.filesystem.FsStateBackend;
 import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
@@ -10,6 +15,10 @@ import org.apache.flink.streaming.api.datastream.KeyedStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
+import org.apache.flink.util.OutputTag;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author :YuFada
@@ -58,10 +67,62 @@ public class BaseLogApp {
         jsonObjectDs.print();
         env.execute("first test");
 
-        // TODO: 2021/6/16 0016 识别新老客户需求
-        KeyedStream<JSONObject, Object> midKeyedDs = jsonObjectDs.keyBy(data ->
+        // TODO 1: 2021/6/16 0016 识别新老客户需求
+        KeyedStream<JSONObject, String> midKeyedDs = jsonObjectDs.keyBy(data ->
            data.getJSONObject("common").getString("mid")
         );
+
+        // TODO: 2021/6/17 0017  检测采集到的是新老客户
+        SingleOutputStreamOperator<JSONObject> midWithNewFlagDS = midKeyedDs.map(new RichMapFunction<JSONObject, JSONObject>() {
+            //声明第一次访问日期的状态
+            private ValueState<String> firstVisitDataState;
+            //声明日期数据格式化对象
+            private SimpleDateFormat simpleDateFormat;
+
+            @Override
+            public void open(Configuration parameters) throws Exception {
+                //初始化数据
+                firstVisitDataState = getRuntimeContext().getState(
+                        new ValueStateDescriptor<String>("newMidDateState", String.class)
+                );
+                simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+            }
+
+            @Override
+            public JSONObject map(JSONObject jsonObj) throws Exception {
+                //获取访问标记   0表示老访客  1表示新访客
+                String isNew = jsonObj.getJSONObject("common").getString("is_new");
+                //获取数据中的时间戳
+                Long ts = jsonObj.getLong("ts");
+
+                //判断标记如果为"1",则继续校验数据
+                if ("1".equals(isNew)) {
+                    //获取新访客状态
+                    String newMidDate = firstVisitDataState.value();
+                    //获取当前访问的日期
+                    String tsDate = simpleDateFormat.format(new Date(ts));
+                    //如果新访客状态不为空,说明该设备已访问过 则将访问标记置为"0"
+                    if (newMidDate != null && newMidDate.length() != 0) {
+                        if (!newMidDate.equals(tsDate)) {
+                            isNew = "0";
+                            jsonObj.getJSONObject("common").put("is_new", isNew);
+                        } else {
+                            //如果复检后，该设备的确没有访问过，那么更新状态为当前日期
+                            firstVisitDataState.update(tsDate);
+                        }
+                    }
+
+                }
+                return jsonObj;
+            }
+
+
+        });
+
+
+        // TODO 2: 2021/6/17 0017  利用侧输出流进行数据的拆分
+        //定义启动和曝光数据的侧输出流标签
+        OutputTag<String> startTag = new OutputTag<>("start");
 
 
     }
