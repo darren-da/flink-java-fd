@@ -1,4 +1,4 @@
-package com.atalibaba.java8;
+package com.alibaba.java8;
 
 import java.util.Objects;
 
