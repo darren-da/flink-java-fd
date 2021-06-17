@@ -7,10 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="DataClean" />
+        <module name="flink-gmall2021-realtime" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="DataClean" target="1.8" />
+      <module name="flink-gmall2021-realtime" target="1.8" />
       <module name="flink-java-fd" target="1.8" />
     </bytecodeTargetLevel>
   </component>
