@@ -18,7 +18,7 @@ import org.apache.flink.util.Collector;
 public class Flink01_WC_batch  {
     public static void main(String[] args) throws Exception  {
         ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
-        DataSource<String> lineDs = env.readTextFile("D:\\Personal\\workspace\\dp-flink-workspace-fada\\flink-java\\src\\main\\java\\input\\word.txt");
+        DataSource<String> lineDs = env.readTextFile("D:\\DevelopWorkspace2\\Flink\\flink-java-fd\\input\\word.txt");
         FlatMapOperator<String, Tuple2<String, Integer>> wordAndOne = lineDs.flatMap(new FlatMapFunction<String, Tuple2<String, Integer>>() {
             @Override
             public void flatMap(String value, Collector<Tuple2<String, Integer>> out) throws Exception {
