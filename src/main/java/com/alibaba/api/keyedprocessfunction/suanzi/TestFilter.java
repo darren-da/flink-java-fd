@@ -1,3 +1,4 @@
+/*
 package com.alibaba.api.keyedprocessfunction.suanzi;
 
 import com.alibaba.base.bean.WaterSensor;
@@ -9,11 +10,13 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 import java.util.Arrays;
 
+*/
 /**
  * @author :YuFada
  * @date： 2020/12/13 0013 下午 21:44
  * Description：
- */
+ *//*
+
 public class TestFilter {
     public static void main(String[] args) {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -23,7 +26,8 @@ public class TestFilter {
             String[] datas = value.split(",");
             return new WaterSensor(datas[0], Long.valueOf(datas[1]), Integer.valueOf(datas[2]));
         });
-      /*  SingleOutputStreamOperator<WaterSensor> fiterDS1 = sensorDs.filter(new FilterFunction<WaterSensor>() {
+      */
+/*  SingleOutputStreamOperator<WaterSensor> fiterDS1 = sensorDs.filter(new FilterFunction<WaterSensor>() {
             @Override
             public boolean filter(WaterSensor waterSensor) throws Exception {
                 return waterSensor.getVc() == 60;
@@ -46,7 +50,8 @@ public class TestFilter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-*/
+*//*
+
 
 
         SplitStream<WaterSensor> splitSS = sensorDs.split(new OutputSelector<WaterSensor>() {
@@ -73,3 +78,4 @@ public class TestFilter {
         }
     }
 }
+*/

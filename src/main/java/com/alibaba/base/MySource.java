@@ -4,20 +4,18 @@ import com.alibaba.base.bean.WaterSensor;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.configuration.Configuration;
-import org.apache.flink.streaming.api.collector.selector.OutputSelector;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
-import org.apache.flink.streaming.api.datastream.SplitStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
 
-import java.util.Arrays;
 import java.util.Random;
 
-/**
- * @author fada.yu
- * @date 2020/10/9 15:56
- * @Description：
- */
+//*
+// * @author fada.yu
+// * @date 2020/10/9 15:56
+// * @Description：
+
+
 public class MySource implements SourceFunction<WaterSensor> {
     boolean flag = true;
 
@@ -83,26 +81,26 @@ public class MySource implements SourceFunction<WaterSensor> {
 //        });
 
 
-        SplitStream<WaterSensor> splitSS = inputDS.split(
-                new OutputSelector<WaterSensor>() {
-                    @Override
-                    public Iterable<String> select(WaterSensor value) {
-                        if (value.getVc() < 50) {
-                            return Arrays.asList("normal");
-                        } else if (value.getVc() < 80) {
-                            return Arrays.asList("warn");
-
-                        } else {
-                            return Arrays.asList("alarm");
-                        }
-
-
-                    }
-                });
-
-        splitSS.select("normal").print("normal");
-        splitSS.select("warn").print("warn");
-        splitSS.select("alarm").print("alarm");
+        //SplitStream<WaterSensor> splitSS = inputDS.split(
+        //        new OutputSelector<WaterSensor>() {
+        //            @Override
+        //            public Iterable<String> select(WaterSensor value) {
+        //                if (value.getVc() < 50) {
+        //                    return Arrays.asList("normal");
+        //                } else if (value.getVc() < 80) {
+        //                    return Arrays.asList("warn");
+        //
+        //                } else {
+        //                    return Arrays.asList("alarm");
+        //                }
+        //
+        //
+        //            }
+        //        });
+        //
+        //splitSS.select("normal").print("normal");
+        //splitSS.select("warn").print("warn");
+        //splitSS.select("alarm").print("alarm");
 
 
 
