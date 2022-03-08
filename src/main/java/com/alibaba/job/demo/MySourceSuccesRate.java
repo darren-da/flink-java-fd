@@ -40,7 +40,7 @@ public class MySourceSuccesRate implements SourceFunction<PaySuccessRateBean> {
                     vcList.get(random.nextInt(vcList.size()))
                     )
             );
-            Thread.sleep(1000L);
+            Thread.sleep(200L);
         }
     }
 
