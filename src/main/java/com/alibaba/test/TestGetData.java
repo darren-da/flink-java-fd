@@ -34,8 +34,8 @@ public class TestGetData {
         //modelData=modelData?.get(propertyPath[i]) 是2
         //modelData?.getRowModel(modelData.getFocusedRowIndex()) 上一位是2，下一位不是2
 
-        String[] pathDesc= "2.3.4".split("\\.");
-        String[] propertyPath = "freeDetail001.p1freeCharacteristics.TEST_USER_30".split("\\.");
+        String[] pathDesc= "2.1".split("\\.");
+        String[] propertyPath = "freeDetail001.productId_name".split("\\.");
 
         //modelData?.get(freeDetail001).getRowModel(modelData.getFocusedRowIndex()).get(p1freeCharacteristics).get(TEST_USER_30)
 
@@ -47,16 +47,30 @@ public class TestGetData {
             }else {
                 if (pathDesc[i-1].equals("2") && !pathDesc[i].equals("2")){
                     //modelData="modelData?.getRowModel(modelData.getFocusedRowIndex()).get(propertyPath[i])";
-                    modelData="modelData?.getRowModel(modelData.getFocusedRowIndex()).get("+propertyPath[i]+")";
+                    modelData+=".getRowModel(modelData.getFocusedRowIndex()).get("+propertyPath[i]+")";
                 }else  {
                     //modelData="modelData?.get(propertyPath[i])";
-                    modelData="modelData?.get("+propertyPath[i]+")";
+                    modelData+=".get("+propertyPath[i]+")";
 
                 }
             }
-            System.out.println(modelData);
         }
 
+/*        for (int i = 1; i <pathDesc.length ; i++) {
+
+            //    //modelData="modelData?.get(propertyPath[i])";
+                modelData="modelData?.get("+propertyPath[i-1]+")";
+                if (pathDesc[i-1].equals("2") && !pathDesc[i].equals("2")){
+            //        //modelData="modelData?.getRowModel(modelData.getFocusedRowIndex()).get(propertyPath[i])";
+                    modelData+=".getRowModel(modelData.getFocusedRowIndex()).get("+propertyPath[i]+")";
+                }else  {
+            //        //modelData="modelData?.get(propertyPath[i])";
+                    modelData+=".get("+propertyPath[i]+")";
+            //
+                }
+            }*/
+
+        System.out.println("modelData= "+modelData);
     }
 }
 //const propertyPath = item?.propertyPath?.split('.')
